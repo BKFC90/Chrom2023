@@ -1,0 +1,51 @@
+# -*- lammps -*-
+#
+# In the second LJ example, we want to set a temperature for the system
+
+units           lj
+atom_style      atomic
+boundary	p p p
+lattice         sc 0.3
+
+# Since we will use temperature in several places, we can define it as
+# a variable, so if we need to change it, we only do so here:
+
+variable T equal 0.5
+
+region          myregion block 0 10 0 10 0 10
+create_box      1 myregion
+create_atoms    1 box
+mass            1 1.0
+
+# as an initial condition, we can give each particle (atom) a random
+# initial velocity, corresonding to a temperature T (which we'll use
+# by referencing the variaable defined above with a dollar sign), and
+# a random number seed (arbitrary):
+
+velocity        all create $T 87287
+
+pair_style      lj/sf 2.5
+pair_coeff	1 1 0.5 1.0 2.5
+neighbor        0.3 bin
+neigh_modify    every 20 delay 0 check yes
+
+# for this simulation we apply a *thermostat*, in this case "NVT",
+# which means that LAMMMPS will adjust particle velocities after each
+# time update to maintain a constant energy, which is the initial
+# energy of the system:
+
+# fix [fix ID] [which particles] [type of fix: NVT] [maintain: temp]
+# [start temp] [end temp] [damp]
+
+fix		F1 all nvt temp $T $T 1
+
+dump    I all image 25000 *.jpg type type size 1000 1000 view 60 120
+dump_modify I backcolor white boxcolor black
+dump_modify I adiam 1 0.25
+dump    M all movie 500 out.mp4 type type size 1000 1000 view 60 120
+dump_modify M backcolor white boxcolor black
+dump_modify M adiam 1 0.25
+thermo		1000
+thermo_style	custom step temp pe ke etotal
+
+run		100000

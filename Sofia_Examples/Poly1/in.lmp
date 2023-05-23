@@ -1,0 +1,59 @@
+# -*- lammps -*-
+#
+# This is the first example in a series on polymers.  The differ from
+# the previous 'LJ' series primarily as follows:
+
+# Polymers have finite size, and so cannot be treated as an infinite
+# array.  This means that we'll have to construct the initial
+# position/velocity table explicitly.
+
+# Polymers have bonds between adjacent repeat units.
+
+units lj
+boundary p p p
+
+# Atom stype 'molecular' permits specification of bonds, etc.
+
+atom_style molecular
+
+# We return to an initialization file containing initial conditions and other specifications
+
+read_data poly.init
+
+# We now separate specifying the interactions (both potentials and
+# bonds) to a separate file.
+
+include interactions
+
+# In this first instance, the repeating units have no attraction, only
+# a repulsive core to keep the polymers from intermingling.
+
+variable T equal 1
+
+group A2 type 1 2
+
+#neighbor 0.5 multi
+neighbor 1.0 multi
+
+dump		I1 A2 movie 100 poly.mp4 type type size 1000 1000 shiny 1.0
+dump_modify	I1 backcolor white
+dump_modify	I1 boxcolor black
+dump_modify	I1 acolor 2 red
+dump_modify	I1 acolor 1 blue
+dump_modify	I1 adiam * 0.75
+
+dump		M1 A2 image 10000 *.jpg type type size 1000 1000 shiny 1.0
+dump_modify	M1 backcolor white
+dump_modify	M1 boxcolor black
+dump_modify	M1 acolor 2 red
+dump_modify	M1 acolor 1 blue
+dump_modify	M1 adiam * 0.75
+
+fix 1 all nve
+fix 2 all langevin $T $T 1.0 8147237
+
+thermo 1000
+thermo_style custom step temp pe ke
+timestep 0.01
+
+run 50000
