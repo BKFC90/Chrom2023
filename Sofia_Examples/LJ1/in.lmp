@@ -66,7 +66,7 @@ fix		F1 all nve
 dump    I all image 25000 *.jpg type type size 1000 1000 view 60 120
 dump_modify I backcolor white boxcolor black
 dump_modify I adiam 1 0.25
-dump    M all movie 500 out.mp4 type type size 1000 1000 view 60 120
+dump    M all movie 500 movie.mp4 type type size 1000 1000 view 60 120
 dump_modify M backcolor white boxcolor black
 dump_modify M adiam 1 0.25
 

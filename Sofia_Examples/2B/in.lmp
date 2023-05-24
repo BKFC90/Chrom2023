@@ -78,16 +78,19 @@ dump_modify I backcolor white boxcolor black
 dump_modify I acolor 1 red
 dump_modify I acolor 2 blue
 
+# 'adiam' means set the diameter of the particle in the display
+# Here particle 2 (in our case the heavier particle has a diameter of 2
+
+dump_modify I adiam 1 4.0
+dump_modify I adiam 2 2.0
+
 # The syntax for a movie is similar, but there's only one for the entire simulation
 
-dump	M all movie 500 out.mp4 type type size 1000 1000 view 60 120
+dump	M all movie 500 movie.mp4 type type size 1000 1000 view 60 120
 dump_modify M backcolor white boxcolor black
 
 dump_modify M acolor 1 red
 dump_modify M acolor 2 blue
-
-# 'adiam' means set the diameter of the particle in the display
-# Here particle 2 (in our case the heavier particle has a diameter of 2
 
 dump_modify M adiam 1 4.0
 dump_modify M adiam 2 2.0

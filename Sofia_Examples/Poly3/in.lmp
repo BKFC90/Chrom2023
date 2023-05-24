@@ -58,7 +58,7 @@ variable T equal 1
 
 #neighbor 0.5 multi
 neighbor 1.0 multi
-dump		M1 all movie 10 poly-slow.mp4 type type size 1000 1000 shiny 1.0
+dump		M1 all movie 10 movie-slow.mp4 type type size 1000 1000 shiny 1.0
 dump_modify	M1 backcolor white
 dump_modify	M1 boxcolor black
 dump_modify	M1 acolor 2 red
@@ -66,7 +66,7 @@ dump_modify	M1 acolor 1 blue
 dump_modify	M1 adiam * 0.10
 dump_modify	M1 bdiam * 0.01
 
-dump		M2 all movie 50 poly.mp4 type type size 1000 1000 shiny 1.0
+dump		M2 all movie 50 movie.mp4 type type size 1000 1000 shiny 1.0
 dump_modify	M2 backcolor white
 dump_modify	M2 boxcolor black
 dump_modify	M2 acolor 2 red

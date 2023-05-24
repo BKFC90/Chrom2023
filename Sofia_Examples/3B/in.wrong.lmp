@@ -19,7 +19,7 @@ read_data 3b.init
 
 # The following 'fix' specifies mirror-like reflection of a trajectory at each wall:
 
-fix W all wall/reflect xlo EDGE xhi EDGE ylo EDGE yhi EDGE zlo EDGE zhi EDGE
+#fix W all wall/reflect xlo EDGE xhi EDGE ylo EDGE yhi EDGE zlo EDGE zhi EDGE
 
 # As an exercise, comment out the fix comment above with a hash mark
 # '#' and run LAMMPS.

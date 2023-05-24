@@ -35,7 +35,7 @@ group A2 type 1 2
 #neighbor 0.5 multi
 neighbor 1.0 multi
 
-dump		I1 A2 movie 100 poly.mp4 type type size 1000 1000 shiny 1.0
+dump		I1 A2 movie 100 movie.mp4 type type size 1000 1000 shiny 1.0
 dump_modify	I1 backcolor white
 dump_modify	I1 boxcolor black
 dump_modify	I1 acolor 2 red
