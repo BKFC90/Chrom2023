@@ -1,25 +1,14 @@
-# -*- lammps -*-
-#
-# This is the first example in a series on polymers.  The differ from
-# the previous 'LJ' series primarily as follow:
+LAMMPS chain data file
 
-# Polymers have finite size, and so cannot be treated as an infinite
-# array.  This means that we'll have to construct the initial
-# position/velocity table explicitly.
-
-# For this model, we have 25 polymers initially in 5x5 array as seen
-# in the YZ plane.  Each polymer has 10 repeating units each of two
-# types (A & B), with all A on one side and all B on the other.
-
-# There is one bond between adjacent units (19 for each polymer), totaling 475.
+# polymer length:  20
+# 25 polymers
+# simulation volume: 27000
 
 500 atoms
 475 bonds
 0 angles
 0 dihedrals
 0 impropers
-
-# We specify 2 atom types (A & B), and only 1 bond type.
 
 2 atom types
 1 bond types
@@ -31,32 +20,11 @@
 -15 15 ylo yhi
 -15 15 zlo zhi
 
-# In this model, masses are the same
-
 Masses
 
 1 1
 2 1
 
-# Below are the initialization assignments.
-
-# Atoms: initial positions of repeating units.  Note that "Atoms" is a
-# LAMMPS keyword for whatever base unit we're using, and cannot be
-# redefined!
-
-# Note the format of each line:
-
-# [unique unit number (must run from 1 to total given above)]
-#                       [molecule number (1-25)] [unit type (1 or 2)] [XYZ coordinates]
-
-# Velocities: initial velocities.  If the 'Velocities' section is
-# omitted, LAMMPS sets all velocities initially to zero.
-
-# Bonds: specifies which units are bonded to each other.
-
-# Format:
-
-# [unique bond number (1-475)] [bond type (1 is all there is)] [first unit] [second unit]
 
 Atoms
 
