@@ -1,0 +1,170 @@
+LAMMPS (23 Jun 2022 - Update 2)
+  using 16 OpenMP thread(s) per MPI task
+# 3d Lennard-Jones
+
+units           lj
+atom_style      atomic
+boundary	p p p # periodic boundary conditions por extended system
+
+# define the box here
+
+# set up a simple cubic lattice on which to put the particles
+# initially (this avoids having to enter hundreds or thousands of
+# positions by hand!)
+
+# we can require a concentration, in this case 0.7 atoms per cubic LJ unit
+lattice         sc 0.3
+Lattice spacing in x,y,z = 1.4938016 1.4938016 1.4938016
+
+# define a variable temperature
+
+#variable T equal 0.75
+
+# set up an interaction volume here (instead of in the init data file)
+
+# first define a region (we can define any number of these)
+region          myregion block 0 10 0 10 0 10
+# now define the simulation volume to be myregion, with the number of atom types
+create_box      1 myregion
+Created orthogonal box = (0 0 0) to (14.938016 14.938016 14.938016)
+  1 by 1 by 1 MPI processor grid
+# now 'create' the atoms according to the lattice in the box, in this case only 1 type
+create_atoms    1 box
+Created 1000 atoms
+  using lattice units in orthogonal box = (0 0 0) to (14.938016 14.938016 14.938016)
+  create_atoms CPU = 0.001 seconds
+
+# LAMMPS will create a volume containing 5x5x5 = 125 atoms, in a
+# volume whose dimensions are scaled such that there is a
+# concentration of 0.7 per cubic LJ unit
+
+# we can define masses here as well, one for each type
+mass            1 1.0
+
+# as an initial condition, we can give each particle (atom) a random
+# initial velocity, corresonding to a temperature T (in this case
+# 0.90, in LJ units), and a random number seed (87287)
+
+# velocity        all create $T 87287
+
+# for this example, we will truncate the LJ potential at the edge of the repulsive core, approximating a gas of hard spheres
+
+pair_style      lj/cut 2.5 # default cutoff
+pair_coeff	1 1 1.0 1.0 2.5 # the last number overrides the cutoff
+
+neighbor        0.3 bin
+neigh_modify    every 20 delay 0 check yes
+
+
+fix		F1 all nve/limit 0.1
+fix		lang all langevin $T $T 10.0 10235
+fix		lang all langevin 0.50 $T 10.0 10235
+fix		lang all langevin 0.50 0.50 10.0 10235
+
+dump    I all image 50000 *-$T.jpg type type size 1000 1000 view 60 120
+dump    I all image 50000 *-0.50.jpg type type size 1000 1000 view 60 120
+dump_modify I backcolor white boxcolor black
+dump_modify I adiam 1 0.3
+
+dump    M all movie 1000 movie-$T.mp4 type type size 1000 1000 view 60 120
+dump    M all movie 1000 movie-0.50.mp4 type type size 1000 1000 view 60 120
+dump_modify M backcolor white boxcolor black
+dump_modify M adiam 1 0.3
+
+thermo		10000
+thermo_style	custom step temp pe ke etotal
+timestep	0.01
+run		500000
+Generated 0 of 0 mixed pair_coeff terms from geometric mixing rule
+Neighbor list info ...
+  update every 20 steps, delay 0 steps, check yes
+  max neighbors/atom: 2000, page size: 100000
+  master list distance cutoff = 2.8
+  ghost atom cutoff = 2.8
+  binsize = 1.4, bins = 11 11 11
+  1 neighbor lists, perpetual/occasional/extra = 1 0 0
+  (1) pair lj/cut, perpetual
+      attributes: half, newton on
+      pair build: half/bin/atomonly/newton
+      stencil: half/bin/3d
+      bin: standard
+Per MPI rank memory allocation (min/avg/max) = 16.86 | 16.86 | 16.86 Mbytes
+   Step          Temp          PotEng         KinEng         TotEng    
+         0   0             -1.2497625      0             -1.2497625    
+     10000   0.48386772    -5.1201682      0.72507577    -4.3950924    
+     20000   0.504531      -5.1643955      0.75603971    -4.4083558    
+     30000   0.50863639    -5.1885276      0.76219162    -4.426336     
+     40000   0.50174002    -5.1267179      0.75185742    -4.3748605    
+     50000   0.48458238    -5.163558       0.7261467     -4.4374113    
+     60000   0.51706806    -5.0920259      0.77482649    -4.3171994    
+     70000   0.51311034    -5.0942496      0.76889584    -4.3253537    
+     80000   0.49336       -5.1429026      0.73929996    -4.4036026    
+     90000   0.51347735    -5.132637       0.76944581    -4.3631912    
+    100000   0.50136835    -5.1694095      0.75130047    -4.418109     
+    110000   0.51044893    -5.1644555      0.76490772    -4.3995477    
+    120000   0.51428241    -5.1200518      0.77065219    -4.3493996    
+    130000   0.49919766    -5.1479009      0.7480477     -4.3998532    
+    140000   0.48541517    -5.1731799      0.72739463    -4.4457853    
+    150000   0.49491559    -5.1309666      0.74163101    -4.3893356    
+    160000   0.50856429    -5.1292344      0.76208359    -4.3671508    
+    170000   0.50028923    -5.1743676      0.74968341    -4.4246842    
+    180000   0.50470838    -5.1958541      0.7563055     -4.4395486    
+    190000   0.50932707    -5.1024313      0.76322662    -4.3392047    
+    200000   0.49456604    -5.1191356      0.7411072     -4.3780284    
+    210000   0.50514281    -5.0697553      0.75695651    -4.3127987    
+    220000   0.48716398    -5.1759742      0.73001523    -4.4459589    
+    230000   0.476589      -5.1074245      0.71416862    -4.3932559    
+    240000   0.48507789    -5.2187111      0.72688922    -4.4918219    
+    250000   0.52269521    -5.1706655      0.78325877    -4.3874067    
+    260000   0.51626353    -5.0934862      0.77362091    -4.3198653    
+    270000   0.51449407    -5.1311564      0.77096937    -4.3601871    
+    280000   0.51544002    -5.1111506      0.77238687    -4.3387638    
+    290000   0.51264791    -5.1613633      0.76820289    -4.3931604    
+    300000   0.50440535    -5.1386896      0.75585141    -4.3828382    
+    310000   0.49645019    -5.0987031      0.74393062    -4.3547725    
+    320000   0.49202498    -5.0965205      0.73729943    -4.3592211    
+    330000   0.49298038    -5.1560694      0.7387311     -4.4173383    
+    340000   0.52583847    -5.1466945      0.78796894    -4.3587256    
+    350000   0.49997065    -5.0884476      0.74920602    -4.3392416    
+    360000   0.50250708    -5.1814213      0.75300686    -4.4284144    
+    370000   0.48981786    -5.1586312      0.73399206    -4.4246391    
+    380000   0.47638336    -5.1173072      0.71386047    -4.4034468    
+    390000   0.48573024    -5.1781851      0.72786676    -4.4503183    
+    400000   0.49912027    -5.1612722      0.74793172    -4.4133404    
+    410000   0.51888623    -5.1406075      0.77755101    -4.3630565    
+    420000   0.50167103    -5.0986572      0.75175404    -4.3469032    
+    430000   0.51042873    -5.0980767      0.76487746    -4.3331993    
+    440000   0.50412641    -5.1096092      0.75543343    -4.3541758    
+    450000   0.52111167    -5.1012877      0.78088584    -4.3204018    
+    460000   0.50901508    -5.1628691      0.76275909    -4.4001101    
+    470000   0.46507104    -5.151323       0.69690895    -4.454414     
+    480000   0.52724719    -5.1381632      0.79007992    -4.3480833    
+    490000   0.51176911    -5.1942393      0.766886      -4.4273533    
+    500000   0.49383928    -5.1838459      0.74001816    -4.4438277    
+Loop time of 224.958 on 16 procs for 500000 steps with 1000 atoms
+
+Performance: 1920359.448 tau/day, 2222.638 timesteps/s
+291.8% CPU use with 1 MPI tasks x 16 OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 150.55     | 150.55     | 150.55     |   0.0 | 66.92
+Neigh   | 25.818     | 25.818     | 25.818     |   0.0 | 11.48
+Comm    | 2.6555     | 2.6555     | 2.6555     |   0.0 |  1.18
+Output  | 13.726     | 13.726     | 13.726     |   0.0 |  6.10
+Modify  | 22.548     | 22.548     | 22.548     |   0.0 | 10.02
+Other   |            | 9.664      |            |       |  4.30
+
+Nlocal:           1000 ave        1000 max        1000 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:           1035 ave        1035 max        1035 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:          30078 ave       30078 max       30078 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 30078
+Ave neighs/atom = 30.078
+Neighbor list builds = 24999
+Dangerous builds = 24998
+Total wall time: 0:03:45
