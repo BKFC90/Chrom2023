@@ -1,0 +1,23 @@
+81c81
+<     if (rlogarg < 0.1) {
+---
+>     if (rlogarg < 0.00001) {
+84,85c84,87
+<       if (rlogarg <= -3.0) error->one(FLERR, "Bad FENE bond");
+<       rlogarg = 0.1;
+---
+>       if (rlogarg <= -3.0) error->one(FLERR, "Bad FENE bond {} {} {} {}", 
+> 				      update->ntimestep, atom->tag[i1], 
+> 				      atom->tag[i2], sqrt(rsq));
+>       rlogarg = 0.00001;
+244c246
+<   if (rlogarg < 0.1) {
+---
+>   if (rlogarg < 0.00001) {
+246,247c248,250
+<     if (rlogarg <= -3.0) error->one(FLERR, "Bad FENE bond");
+<     rlogarg = 0.1;
+---
+>     if (rlogarg <= -3.0) error->one(FLERR, "Bad FENE bond {} {} {} {}", 
+> 				    update->ntimestep, sqrt(rsq));
+>     rlogarg = 0.00001;
