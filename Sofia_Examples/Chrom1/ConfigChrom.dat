@@ -1,0 +1,5 @@
+box_half_edge:	35.0 // box half edge
+NuclearRadius:	30.0 // nuclear radius
+BeadSpacing:	0.02 // BeadSpacing
+Nphi:		60 // azimuthal angles in bounding sphere
+Ntheta:		10 // latitude angles in bounding sphere

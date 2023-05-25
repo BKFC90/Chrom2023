@@ -1,0 +1,58 @@
+# -*- lammps -*-
+# base variables
+
+variable T equal 1.0
+
+# NE paramters
+
+variable eps_ne equal 1.0
+variable sigma_ne equal 0.5
+variable cut_ne equal 0.5
+
+# TE paramters
+variable eps_te equal 4.0
+variable sigma_te equal 0.5
+variable cut_te equal 1.5
+
+variable eps_base equal 1
+variable sigma_base equal 1
+
+# soft variables
+# harmonic variables
+#variable K_h equal  1000
+#variable a_h equal 1.10
+#variable K_Rh equal ${K_h}/4
+#variable a_Rh equal 2*${a_h}
+#variable K2_h equal 10000
+
+#class2 variables
+variable a_s equal 0.8
+variable a_Rs equal 2*${a_s}
+variable K2_s equal 0
+variable K2_Rs equal ${K2_s}/4
+variable K3_s equal 0
+variable K3_Rs equal ${K3_s}/8
+variable K4_s equal 50000
+variable K4_Rs equal ${K4_s}/16
+
+# centromere bond
+variable K2 equal 0
+variable K3 equal 0
+variable K4 equal 0.02
+variable a_c equal 8
+
+# FENE bond variables
+variable sigma_b equal 1.00
+variable L_b equal 1.5*${sigma_b}
+variable K_b equal 30/${sigma_b}^2
+
+# standard LJ parameters
+
+variable eps_n equal 1.00
+variable sigma_n equal 1.00
+
+# telomeres
+
+variable eps_t equal 3.0
+variable sigma_t equal 1.00
+variable cut_t equal 2.5*${sigma_t}
