@@ -1,8 +1,0 @@
-# -*- lammps -*-
-
-bond_style harmonic
-bond_coeff 1 5000 0.9
-
-pair_style soft 1.0
-pair_coeff * *  100.0
-
