@@ -1,0 +1,36 @@
+LAMMPS datafile
+
+#
+#
+
+3	atoms
+0	bonds
+0	angles
+0	dihedrals
+
+3	atom types
+0	bond types
+0	angle types
+0	dihedral types
+
+-40	40	xlo	xhi
+-40	40	ylo	yhi
+-40	40	zlo	zhi
+
+Masses
+
+1	10000.0
+2	100.0
+3	100.0
+
+Atoms
+
+1	1	0	0	0
+2	2	0	0	5
+3	3	0	0	-7
+
+Velocities
+
+1	0		0		0
+2	0.25		0		-0.25
+3	-0.25		0		0.25

@@ -1,0 +1,20 @@
+# -*- lammps -*-
+#
+
+special_bonds fene
+
+bond_style fene
+bond_coeff 1 30 1.5 1.0 1.0
+
+# Apart from bonds between adjacent units, there are still pair-wise
+# interactions between all of them:
+
+# For thist model, the LJ potential has an attractive tail for A-B
+# interactions, but is still cut off for A-A and B-B.
+
+# In specifying interactions, one can use wildcards to select 'all'
+# particles, then override for specific cases.
+
+pair_style  lj/sf 1.0
+pair_coeff * * 1.0 1.0 1.0 # 'default'
+pair_coeff 1 2 1.0 1.0 2.5 # A-B (1-2) interaction has attractive tail by extended cutoff

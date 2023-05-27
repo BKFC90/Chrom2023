@@ -1,0 +1,111 @@
+# -*- lammps -*-
+#
+# This is a very simple first file for LAMMPS.  The model consists of
+# just two particles, interacting via a Yukawa (screened Coulomb
+# potential.
+
+# First, a couple of key rules:
+# 1. Anything following a hashmark '#' is considered a comment
+# 2. Typically blank spaces are ignored, though there are exceptions.
+
+# One must define units.  In our case we'll use so-called
+# Lennard-Jones units, which makes all typical quantities
+# dimensionless.  Other units are given in the LAMMPS documentation.
+
+# The first word in a line is usually a LAMMPS keyword, in this case
+# 'units', typically followed by a space or tab, and then options, in
+# this case 'lj'
+
+units		lj
+
+# The simulation is run inside a defined space.  First, the boundary condition:
+
+boundary	f f f # stands for fixed boundaries in the x y z directions
+
+# Typical styles are atomic and molecular. For now we use atomic:
+
+atom_style	atomic
+
+# The participating particles and their initial positions (and
+# possibly velocities) are often defined in a separate file
+
+read_data 2b.init # this file has its own contents
+
+# Now define the interaction.  Note that the order of the parameter
+# MATTERS.  For most potentials one sets a cutoff: even though the
+# potential in principle has infinite range, usually what matters is
+# the effect of nearest neighbors, which also means that the
+# compuatioal algorithm considers only restricted zones around each
+# particle rather than every possible pair in the system.
+
+# For pair style Yukawa:
+
+# V(r) = A exp(-kappa r) / 4, approaching a Coulomb potential for small kappa
+
+pair_style yukawa 0.00001 20.0 # kappa cutoff
+
+pair_coeff * * 0.0 5.0 # '*' means all particle types, followed by A and the cutoff (again)
+
+pair_coeff 1 2 -10.0 20.0 # here the explicit 1-2 interaction
+#                                       overrides the previous expression
+
+# Outputs
+# Most output is a result of a 'dump' command.
+
+# Start with graphical output.
+# The syntax is
+# dump [required label that you supply] image [still photo] [every N time steps]
+#                                        [kind of partlcle] [kind of particle]
+#                                        [size of viewing screen in pixels]
+#                                        view [change viewing angle]
+
+# The following command will create a .jpg image file after every 10,000 time steps:
+
+dump	I all image 25000 *.jpg type type size 1000 1000 view 60 120
+
+# We can modify defaults
+
+# dump_modify [use the label above] backcolor [background color (default is black)]
+#                                        boxcolor [color of box border (default yellow)]
+
+dump_modify I backcolor white boxcolor black
+
+# We can also change the colors of the particles
+
+# 'acolor' means set the color for an atomic particle
+# Here particle 1 is red, particle 2 is blue
+
+dump_modify I acolor 1 red
+dump_modify I acolor 2 blue
+
+# 'adiam' means set the diameter of the particle in the display
+# Here particle 2 (in our case the heavier particle has a diameter of 2
+
+dump_modify I adiam 1 4.0
+dump_modify I adiam 2 2.0
+
+# The syntax for a movie is similar, but there's only one for the entire simulation
+
+dump	M all movie 500 movie.mp4 type type size 1000 1000 view 60 120
+dump_modify M backcolor white boxcolor black
+
+dump_modify M acolor 1 red
+dump_modify M acolor 2 blue
+
+dump_modify M adiam 1 4.0
+dump_modify M adiam 2 2.0
+
+# We must tell LAMMPS how to run the simulation.  In this case 'nve'
+# with no modifiers means to integrate the equations of motion.  In a
+# system like this, energy is conserved.
+
+# The syntax is
+# fix [label that you supply] [who gets it; in this call all atoms] nve (the kind of fix)
+
+fix F1 all nve
+
+# Last command: run the simulation for N timesteps.  The default
+# timestep is 0.01 LJ unit of time.
+
+run 100000
+

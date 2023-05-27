@@ -1,0 +1,22 @@
+LAMMPS datafile
+
+#
+# nuclear radius: 30
+# box half edge: 35
+# bead spacing: 0.02
+#
+
+2761	atoms
+1500	bonds
+0	angles
+0	dihedrals
+
+6	atom types
+2	bond types
+0	angle types
+0	dihedral types
+
+-35	35	xlo	xhi
+-35	35	ylo	yhi
+-35	35	zlo	zhi
+
