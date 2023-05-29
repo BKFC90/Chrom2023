@@ -1,0 +1,155 @@
+# -*- lammps -*-
+#
+# This example provides a model of two chromosomes in a cell nucleus
+
+# Introducing new aspects following the Poly3 example
+
+# spherical confining volume
+# separate identies for the two chromosomes
+# unique identities for telomeres and centromeres
+# a spindle pole body that tethers the centromeres
+
+units		lj
+boundary	f f f
+atom_style	molecular
+
+# changes here:
+
+read_data chrom.init
+
+# particle definitions from that file:
+
+# 3: telomere
+# 4: centromere
+# 1: all others in chromosome 1
+# 2: all others in chromosome 2
+# 5: SPB
+# 6: 'fake' non-interacting particles whose visible location describes the confining sphere
+
+# let all masses equal 1
+
+mass * 1.00
+
+#neighbor 0.5 multi
+
+#extend the range of computation for a group of particles, otherwise
+#LAMMPS crashes with "bond atoms missing" message.
+
+comm_modify mode single cutoff 20.0
+
+include variables
+include softinteractions
+
+group particle type 1 2 3 4
+group normal type 1 2 4
+group centro type 4
+group telo type 3
+
+# set the radius of the cell nucleus
+
+variable rad equal 30
+
+# define a spherical region (v_rad is the variable rad) as the volume *inside* the sphere
+
+region mySphere sphere 0.0 0.0 0.0 v_rad side in
+
+# There is no reflect option for a curved surface.  Instead, we define
+# a Lennard-Jones potential for particles near the nuclear envelope,
+# one for telomeres (which are attracted to the envelope, and one for
+# everything else
+
+fix walln normal wall/region mySphere lj126 ${eps_ne} ${sigma_ne} ${cut_ne}
+fix wallt telo wall/region mySphere  lj126 ${eps_te} ${sigma_te} ${cut_te}
+
+# The graphics statements set the chromosome 1 to light green and
+# chromosome 2 to light blue
+
+dump	I all image 50000 *.jpg type type bond type type size 1000 1000 view 60 120
+dump_modify I backcolor white boxcolor black
+dump_modify I adiam * 0.75
+dump_modify I adiam 3 2.0
+dump_modify I adiam 4 2.0
+dump_modify I adiam 5 3.0
+dump_modify I adiam 6 0.4
+dump_modify I acolor 1 lightgreen
+dump_modify I acolor 2 lightblue
+dump_modify I acolor 3 red
+dump_modify I acolor 4 blue
+dump_modify I acolor 5 green
+dump_modify I acolor 6 black
+dump_modify I bdiam 1 0.1
+dump_modify I bcolor 1 gray
+dump_modify I bdiam 2 0.75
+dump_modify I bcolor 2 gray
+
+dump	M all movie 1000 movie.mp4 type type bond type type size 1000 1000 view 60 120
+dump_modify M backcolor white boxcolor black
+dump_modify M adiam * 0.75
+dump_modify M adiam 3 2.0
+dump_modify M adiam 4 2.0
+dump_modify M adiam 5 3.0
+dump_modify M adiam 6 0.4
+dump_modify M acolor 1 lightgreen
+dump_modify M acolor 2 lightblue
+dump_modify M acolor 3 red
+dump_modify M acolor 4 blue
+dump_modify M acolor 5 green
+dump_modify M acolor 6 black
+dump_modify M bdiam 1 0.1
+dump_modify M bcolor 1 gray
+dump_modify M bdiam 2 0.75
+dump_modify M bcolor 2 gray
+
+# This command restricts the distance a particle can move over one
+# timestep.  With shorter distances, the system is less lkely to crash
+# with lost atoms or molecules, but will take longer to run, so the
+# goal is to do this only for the runtime needed (often trial and
+# error).
+
+fix		1 particle nve/limit 0.001
+fix		lang particle langevin $T $T 1.0 ${langseed}
+
+thermo_style	custom step temp ke pe
+thermo          1000
+
+# For this run, we must start slowly to get the system going
+#
+# initial run with 'soft' interactions
+#
+
+run 10000
+
+#
+# now switch to the real interactions
+#
+
+include interactions
+
+# move even more slowly for 10000 steps
+
+unfix 1
+fix		1 particle nve/limit 0.0001
+
+run 10000
+
+#
+# gradually increase limiting particle movement range
+#
+
+unfix 1
+fix		1 particle nve/limit 0.0005
+
+# gradually increase the movement limit
+
+run 10000
+
+#
+# now move to production run (0.05 is the default value)
+#
+
+unfix 1
+fix		1 particle nve/limit 0.05
+
+# total of 500000 timesteps
+
+run 450000
