@@ -15,7 +15,7 @@ lattice         sc 0.3
 
 # define a variable temperature
 
-variable T equal 0.75
+variable T equal 1.50
 
 # set up an interaction volume here (instead of in the init data file)
 
@@ -41,15 +41,19 @@ mass            1 1.0
 
 # for this example, we will truncate the LJ potential at the edge of the repulsive core, approximating a gas of hard spheres
 
-pair_style      lj/cut 2.5 # default cutoff
-pair_coeff	1 1 1.0 1.0 2.5 # the last number overrides the cutoff
+pair_style      lj/cut 3.0 # default cutoff
+pair_coeff	1 1 1.0 1.0 3.0 # the last number overrides the cutoff
 
 neighbor        0.3 bin
 neigh_modify    every 20 delay 0 check yes
 
+compute myRDF all rdf 100
+
 
 fix		F1 all nve/limit 0.1
 fix		lang all langevin $T $T 10.0 10235
+
+fix 		7 all ave/time 100000 1 100000 c_myRDF[*] file g.dat mode vector
 
 dump    I all image 100000 *.jpg type type size 1000 1000 view 60 120
 dump_modify I backcolor white boxcolor black

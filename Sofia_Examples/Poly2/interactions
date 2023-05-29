@@ -1,14 +1,10 @@
 # -*- lammps -*-
 #
-# For this 'Rouse' model, bonds between adjacent units are specified
-# by a harmonic potential centered on the average bond distance, in
-# this case 1.0 LJ units.
 
-# The format is [bond number (only 1 in this case)] [strength K]
-#                      [equilibrium separation in LJ units]
+special_bonds fene
 
-bond_style harmonic
-bond_coeff 1 10 1
+bond_style fene
+bond_coeff 1 30 1.5 1.0 1.0
 
 # Apart from bonds between adjacent units, there are still pair-wise
 # interactions between all of them:
