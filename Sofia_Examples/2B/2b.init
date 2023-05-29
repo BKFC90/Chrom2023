@@ -17,7 +17,7 @@
 # This group lists the number of TYPES.  In our case, there are two
 # types: a heavy plus a lighter atom.
 
-2	atom types
+1	atom types
 0	bond types
 # This comment line is OK.
 0	angle types
@@ -33,21 +33,20 @@
 
 Masses
 
-1	1000.0
-2	100.0
+1	100.0
 
 # Now provide the initial coordinates of each particle:
 # [particle ID (running order)] [atom type] [x y z coordinate]
 
 Atoms
 
-1	1	0	0	0
-2	2	0	0	5
+1	1	0	0	5.0
+2	1	0	5.0	0
 
 # Now provide the initial velocities of each particle (default: zero if you don't include this)
 # [particle ID (running order)] [x y z velocities]
 
 Velocities
 
-1      0		0		0
-2      0.14		0		0
+1	0.1	0	0
+2	-0.1	0	0

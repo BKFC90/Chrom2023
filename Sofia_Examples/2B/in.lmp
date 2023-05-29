@@ -44,56 +44,33 @@ read_data 2b.init # this file has its own contents
 
 pair_style yukawa 0.00001 20.0 # kappa cutoff
 
-pair_coeff * * 0.0 5.0 # '*' means all particle types, followed by A and the cutoff (again)
-
-pair_coeff 1 2 -10.0 20.0 # here the explicit 1-2 interaction
-#                                       overrides the previous expression
+pair_coeff * * -10.0 20.0 # '*' means all particle types, followed by A and the cutoff (again)
 
 # Outputs
 # Most output is a result of a 'dump' command.
 
 # Start with graphical output.
 # The syntax is
-# dump [required label that you supply] image [still photo] [every N time steps]
+# dump [required label that you supply] image [movie] [every N time steps]
 #                                        [kind of partlcle] [kind of particle]
 #                                        [size of viewing screen in pixels]
 #                                        view [change viewing angle]
 
-# The following command will create a .jpg image file after every 10,000 time steps:
+# The following command will create an mp4 file every 500 time steps:
 
-dump	I all image 25000 *.jpg type type size 1000 1000 view 60 120
+dump	M all movie 500 movie.mp4 type type size 1000 1000 view 60 120
 
 # We can modify defaults
 
 # dump_modify [use the label above] backcolor [background color (default is black)]
 #                                        boxcolor [color of box border (default yellow)]
 
-dump_modify I backcolor white boxcolor black
+dump_modify M backcolor white boxcolor black
+dump_modify M adiam 1 3.0
 
-# We can also change the colors of the particles
-
-# 'acolor' means set the color for an atomic particle
-# Here particle 1 is red, particle 2 is blue
-
-dump_modify I acolor 1 red
-dump_modify I acolor 2 blue
 
 # 'adiam' means set the diameter of the particle in the display
 # Here particle 2 (in our case the heavier particle has a diameter of 2
-
-dump_modify I adiam 1 4.0
-dump_modify I adiam 2 2.0
-
-# The syntax for a movie is similar, but there's only one for the entire simulation
-
-dump	M all movie 500 movie.mp4 type type size 1000 1000 view 60 120
-dump_modify M backcolor white boxcolor black
-
-dump_modify M acolor 1 red
-dump_modify M acolor 2 blue
-
-dump_modify M adiam 1 4.0
-dump_modify M adiam 2 2.0
 
 # We must tell LAMMPS how to run the simulation.  In this case 'nve'
 # with no modifiers means to integrate the equations of motion.  In a
