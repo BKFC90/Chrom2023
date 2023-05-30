@@ -33,16 +33,6 @@ pair_coeff 1 2 -20.0 50.0
 pair_coeff 1 3 -20.0 50.0
 pair_coeff 2 3 -5.0 20.0
 
-dump	I all image 50000 *.jpg type type size 1000 1000 view 60 120
-dump_modify I backcolor white boxcolor black
-dump_modify I backcolor white boxcolor black
-dump_modify I acolor 1 red
-dump_modify I acolor 2 blue
-dump_modify I acolor 3 green
-dump_modify I adiam 1 10.0
-dump_modify I adiam 2 5.0
-dump_modify I adiam 3 5.0
-
 dump	M all movie 500 movie.mp4 type type size 1000 1000 view 60 120
 dump_modify M backcolor white boxcolor black
 dump_modify M acolor 1 red
