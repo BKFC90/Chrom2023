@@ -1,8 +1,8 @@
 # -*- lammps -*-
 #
-# This second example in a series on polymers differs only by relaxing
-# the LJ potential to have an attractive tail between A and B units.
-# A-A and B-B interactions remain the same - only a repulsive core.
+# This first example for polymers has an LJ potentialwith an
+# attractive tail between A and B units.  A-A and B-B interactions
+# have only a repulsive core.
 
 # Thus, only the 'interactions' file is modified.
 
@@ -17,7 +17,7 @@ include interactions
 
 variable T equal 1
 group A2 type 1 2
-#neighbor 0.5 multi
+
 neighbor 1.0 multi
 dump		I1 A2 movie 100 movie.mp4 type type size 1000 1000 shiny 1.0
 dump_modify	I1 backcolor white
@@ -25,13 +25,6 @@ dump_modify	I1 boxcolor black
 dump_modify	I1 acolor 2 red
 dump_modify	I1 acolor 1 blue
 dump_modify	I1 adiam * 0.75
-
-dump		M1 A2 image 25000 *.jpg type type size 1000 1000 shiny 1.0
-dump_modify	M1 backcolor white
-dump_modify	M1 boxcolor black
-dump_modify	M1 acolor 2 red
-dump_modify	M1 acolor 1 blue
-dump_modify	M1 adiam * 0.75
 
 fix 1 all nve
 fix 2 all langevin $T $T 1.0 8147237

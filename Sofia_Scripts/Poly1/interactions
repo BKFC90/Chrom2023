@@ -14,7 +14,7 @@ bond_coeff 1 10 1
 # interactions between all of them:
 
 # For thist model, the LJ potential has an attractive tail for A-B
-# interactions, but is still cut off for A-A and B-B.
+# interactions, but is  cut off for A-A and B-B.
 
 # In specifying interactions, one can use wildcards to select 'all'
 # particles, then override for specific cases.

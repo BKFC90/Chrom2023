@@ -65,6 +65,7 @@ dump_modify	M1 acolor 1 blue
 dump_modify	M1 adiam * 0.10
 dump_modify	M1 bdiam * 0.01
 
+# this is a slow-motion movie, evaluated every 10 steps, and terminating after 1000 steps
 dump		M2 all movie 10 movie.mp4 type type size 1000 1000 shiny 1.0
 dump_modify	M2 backcolor white
 dump_modify	M2 boxcolor black
@@ -73,6 +74,7 @@ dump_modify	M2 acolor 1 blue
 dump_modify	M2 adiam * 0.10
 dump_modify	M2 bdiam * 0.01
 
+# add a request for still images every 500 steps
 dump		I1 all image 5000 *.jpg type type size 1000 1000 shiny 1.0
 dump_modify	I1 backcolor white
 dump_modify	I1 boxcolor black
